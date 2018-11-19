@@ -1,0 +1,17 @@
+metadata:
+  name: spring-boot-app
+  labels:
+    project: TaaS
+data:
+  application.yml: |-
+    management:
+      context-path: /manage
+      security:
+        enabled: false
+
+    server:
+      port: 8080
+    #  tomcat:
+    #    max-connections: 10000
+    #    accept-count: 100
+    #    max-threads: 200

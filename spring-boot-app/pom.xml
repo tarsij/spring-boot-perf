@@ -1,0 +1,167 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>tarsij.performance</groupId>
+    <artifactId>spring-boot-perf</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>spring-boot-app</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <properties>
+    <service-name>${project.artifactId}</service-name>
+
+    <spring-boot.application.name>${service-name}-${project.parent.version}</spring-boot.application.name>
+    <spring-boot.start-class>tarsij.performance.springboot.Application</spring-boot.start-class>
+
+    <java.version>1.8</java.version>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
+
+    <fabric8-maven-plugin.version>3.5.42</fabric8-maven-plugin.version>
+    <docker.image.name>${service-name}</docker.image.name>
+    <docker.image.version>%t</docker.image.version>
+    <docker.baseimage.name>fabric8/java-alpine-openjdk8-jre</docker.baseimage.name>
+    <docker.baseimage.version>1.5</docker.baseimage.version>
+
+    <kubernetes-master.address>https://192.168.99.100:8443</kubernetes-master.address>
+
+    <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
+
+    <lombok.version>1.18.4</lombok.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${lombok.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven-compiler-plugin.version}</version>
+        <configuration>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>${lombok.version}</version>
+            </path>
+          </annotationProcessorPaths>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <finalName>${spring-boot.application.name}</finalName>
+          <mainClass>${spring-boot.start-class}</mainClass>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>build-info</goal>
+            </goals>
+            <configuration>
+              <additionalProperties>
+                <encoding.source>UTF-8</encoding.source>
+                <encoding.reporting>UTF-8</encoding.reporting>
+                <java.source>${maven.compiler.source}</java.source>
+                <java.target>${maven.compiler.target}</java.target>
+              </additionalProperties>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>kubernetes</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>fabric8-maven-plugin</artifactId>
+            <version>${fabric8-maven-plugin.version}</version>
+            <configuration>
+              <profile>fabric8-profile</profile>
+              <mode>kubernetes</mode>
+              <generator>
+                <config>
+                  <spring-boot>
+                    <alias>${service-name}</alias>
+                    <name>${docker.image.name}:${docker.image.version}</name>
+                    <from>${docker.baseimage.name}:${docker.baseimage.version}</from>
+                  </spring-boot>
+                </config>
+              </generator>
+              <resources>
+                <labels>
+                  <all>
+                    <project>TaaS</project>
+                  </all>
+                </labels>
+              </resources>
+              <enricher>
+                <includes>
+                  <include>fmp-controller</include>
+                  <include>fmp-service</include>
+                </includes>
+                <config>
+                  <fmp-controller>
+                    <name>${service-name}</name>
+                    <pullPolicy>Always</pullPolicy>
+                  </fmp-controller>
+                  <fmp-service>
+                    <name>${service-name}</name>
+                    <type>NodePort</type>
+                  </fmp-service>
+                </config>
+              </enricher>
+            </configuration>
+            <executions>
+              <execution>
+                <id>fmp</id>
+                <goals>
+                  <goal>resource</goal>
+                  <goal>build</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+</project>

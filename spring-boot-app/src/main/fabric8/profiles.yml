@@ -1,0 +1,23 @@
+- name: fabric8-profile
+  enricher:
+    includes:
+    - fmp-name
+    - fmp-controller
+    - fmp-service
+    - fmp-image
+    - fmp-portname
+    - fmp-project
+    - fmp-dependency
+    - fmp-pod-annotations
+    - fmp-git
+    - f8-expose
+    - spring-boot-health-check
+    - docker-health-check
+
+  generator:
+    includes:
+    - spring-boot
+
+  watcher:
+    includes:
+    - spring-boot

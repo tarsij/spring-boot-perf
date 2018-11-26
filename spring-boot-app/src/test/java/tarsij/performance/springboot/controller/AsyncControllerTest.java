@@ -2,7 +2,7 @@ package tarsij.performance.springboot.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import tarsij.performance.springboot.service.impl.RemoteServiceImpl;
+import tarsij.performance.springboot.service.impl.AsyncServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
@@ -14,7 +14,7 @@ public class AsyncControllerTest {
   private static final long MIN_RESPONSE_TIME = 500L;
   private static final long MAX_RESPONSE_TIME = 501L;
 
-  private AsyncController asyncController = new AsyncController(new RemoteServiceImpl<>());
+  private AsyncController asyncController = new AsyncController(new AsyncServiceImpl<>());
 
   @Test
   public void asyncController_WHEN_many_concurrent_calls() {

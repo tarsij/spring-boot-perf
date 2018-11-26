@@ -5,7 +5,7 @@ management:
 
 server:
   port: 8888
-#  tomcat:
-#    max-connections: 10000
-#    accept-count: 100
-#    max-threads: 200
+  tomcat:
+    max-connections: 60000
+    accept-count: 100
+    max-threads: 200

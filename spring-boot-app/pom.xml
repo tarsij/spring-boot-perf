@@ -10,30 +10,25 @@
   </parent>
 
   <artifactId>spring-boot-app</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
 
   <properties>
-    <service-name>${project.artifactId}</service-name>
-
-    <spring-boot.application.name>${service-name}-${project.parent.version}</spring-boot.application.name>
-    <spring-boot.start-class>tarsij.performance.springboot.Application</spring-boot.start-class>
+    <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
 
     <java.version>1.8</java.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
 
     <fabric8-maven-plugin.version>3.5.42</fabric8-maven-plugin.version>
+    <lombok.version>1.18.4</lombok.version>
+
+    <service-name>${project.artifactId}</service-name>
+    <spring-boot.application.name>${service-name}-${project.parent.version}</spring-boot.application.name>
+    <spring-boot.start-class>tarsij.performance.springboot.Application</spring-boot.start-class>
     <docker.image.name>${service-name}</docker.image.name>
     <docker.image.version>%t</docker.image.version>
     <docker.baseimage.name>fabric8/java-alpine-openjdk8-jre</docker.baseimage.name>
     <docker.baseimage.version>1.5</docker.baseimage.version>
-
     <kubernetes-master.address>https://192.168.99.100:8443</kubernetes-master.address>
-
-    <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
-
-    <lombok.version>1.18.4</lombok.version>
   </properties>
 
   <dependencies>

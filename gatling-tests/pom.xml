@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>tarsij.performance</groupId>
+    <artifactId>spring-boot-perf</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>gatling-tests</artifactId>
+
+  <properties>
+    <properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
+    <scala-maven-plugin.version>3.4.4</scala-maven-plugin.version>
+    <scala-main.version>2.12</scala-main.version>
+    <scala.version>${scala-main.version}.7</scala.version>
+    <gatling.version>3.0.1</gatling.version>
+
+    <gatling.simulationsFolder>src/test/scala</gatling.simulationsFolder>
+    <gatling.resourcesFolder>src/test/resources</gatling.resourcesFolder>
+    <gatling.resultsFolder>reports</gatling.resultsFolder>
+    <gatling.simulationClass></gatling.simulationClass>
+    <gatling.runDescription></gatling.runDescription>
+    <gatling.noReports>false</gatling.noReports>
+    <gatling.reportsOnly></gatling.reportsOnly>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.gatling</groupId>
+        <artifactId>gatling-app</artifactId>
+        <version>${gatling.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.gatling</groupId>
+        <artifactId>gatling-recorder</artifactId>
+        <version>${gatling.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.gatling.highcharts</groupId>
+        <artifactId>gatling-charts-highcharts</artifactId>
+        <version>${gatling.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.scala-lang</groupId>
+        <artifactId>scala-library</artifactId>
+        <version>${scala.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.gatling.highcharts</groupId>
+      <artifactId>gatling-charts-highcharts</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.gatling</groupId>
+      <artifactId>gatling-app</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.gatling</groupId>
+      <artifactId>gatling-recorder</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <testSourceDirectory>src/test/scala</testSourceDirectory>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>net.alchim31.maven</groupId>
+          <artifactId>scala-maven-plugin</artifactId>
+          <version>${scala-maven-plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>io.gatling</groupId>
+          <artifactId>gatling-maven-plugin</artifactId>
+          <version>${gatling.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>properties-maven-plugin</artifactId>
+          <version>${properties-maven-plugin.version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+      <!-- The maven properties are not passed through the system properties
+           to the scala class when executed with the scala-maven-plugin.
+           To solve this issue we use the properties-maven-plugin to save
+           the maven properties in a file, which in turn is loaded by the
+           scala app -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>properties-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>initialize</phase>
+            <goals>
+              <goal>write-project-properties</goal>
+            </goals>
+            <configuration>
+              <outputFile>
+                ${project.build.testOutputDirectory}/maven.properties
+              </outputFile>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- The scala compiler plugin. It is used to compile and execute scala
+           tests. in order to execute the app we have to specify the main class
+           with the -DmainClass parameter. As the scala executor does not pass in
+           the maven properties to the app we use the properties-maven-plugin
+           as workaround. The lunchers are an alternative to the -DmainClass.
+           If lunchers are specified but no luncher is selected, then the first
+           luncher is executed ( -Dluncher=<luncherId> ) -->
+      <plugin>
+        <groupId>net.alchim31.maven</groupId>
+        <artifactId>scala-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>testCompile</goal>
+            </goals>
+            <configuration>
+              <args>
+                <arg>-target:jvm-1.8</arg>
+                <arg>-deprecation</arg>
+                <arg>-feature</arg>
+                <arg>-unchecked</arg>
+                <arg>-language:implicitConversions</arg>
+                <arg>-language:postfixOps</arg>
+              </args>
+            </configuration>
+          </execution>
+        </executions>
+        <configuration>
+          <launchers>
+            <launcher>
+              <id>Engine</id>
+              <mainClass>Engine</mainClass>
+            </launcher>
+            <launcher>
+              <id>Recorder</id>
+              <mainClass>Recorder</mainClass>
+            </launcher>
+          </launchers>
+        </configuration>
+      </plugin>
+
+      <!-- The gatling runner plugin. It is an alternative executor for
+           gatling tests. It does not invoke the Engine but runs the tests
+           directly. The test class is specified with the -Dgatling.simulationClass
+           commandline parameter. The plugin passes the maven properties as
+           system properties. -->
+      <plugin>
+        <groupId>io.gatling</groupId>
+        <artifactId>gatling-maven-plugin</artifactId>
+        <configuration>
+          <disableCompiler>true</disableCompiler>
+          <simulationsFolder>${gatling.simulationsFolder}</simulationsFolder>
+          <resourcesFolder>${gatling.resourcesFolder}</resourcesFolder>
+          <resultsFolder>${gatling.resultsFolder}</resultsFolder>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

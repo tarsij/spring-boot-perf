@@ -1,6 +1,6 @@
 package tarsij.performance.springboot.controller;
 
-import tarsij.performance.springboot.service.RemoteService;
+import tarsij.performance.springboot.service.AsyncService;
 import java.util.concurrent.ThreadLocalRandom;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,17 +15,17 @@ public class AsyncController {
   private static final String MIN_RESPONSE_TIME = "500";
   private static final String MAX_RESPONSE_TIME = "501";
 
-  private RemoteService<ResponseEntity<String>> remoteService;
+  private AsyncService<ResponseEntity<String>> asyncService;
 
-  public AsyncController(RemoteService<ResponseEntity<String>> remoteService) {
-    this.remoteService = remoteService;
+  public AsyncController(AsyncService<ResponseEntity<String>> asyncService) {
+    this.asyncService = asyncService;
   }
 
   @GetMapping(path = "/synchello")
   public ResponseEntity<String> getSyncHello(
       @RequestParam(value = "min", defaultValue = MIN_RESPONSE_TIME) Long min,
       @RequestParam(value = "max", defaultValue = MAX_RESPONSE_TIME) Long max) {
-    return remoteService.syncCall(
+    return asyncService.syncCall(
         ThreadLocalRandom.current().nextLong(min, max),
         () -> new ResponseEntity<>("Hello", HttpStatus.OK)
     );
@@ -37,7 +37,7 @@ public class AsyncController {
       @RequestParam(value = "max", defaultValue = MAX_RESPONSE_TIME) Long max) {
     DeferredResult<ResponseEntity<String>> deferredResult = new DeferredResult<>();
 
-    remoteService.asyncCall(
+    asyncService.asyncCall(
         ThreadLocalRandom.current().nextLong(min, max),
         () -> new ResponseEntity<>("Hello", HttpStatus.OK),
         deferredResult::setResult

@@ -2,24 +2,24 @@ package tarsij.performance.springboot.service.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import tarsij.performance.springboot.service.RemoteService;
+import tarsij.performance.springboot.service.AsyncService;
 import java.util.concurrent.atomic.AtomicLong;
 import org.junit.Test;
 
-public class ScheduledRemoteServiceImplTest {
+public class AsyncServiceImplTest {
 
   private static final long RESPONSE_TIME = 500L;
 
   @Test
-  public void scheduledRemoteService_WHEN_many_concurrent_calls() {
-    RemoteService<Object> remoteService = new ScheduledRemoteServiceImpl<>();
+  public void remoteService_WHEN_many_concurrent_calls() {
+    AsyncService<Object> asyncService = new AsyncServiceImpl<>();
     long callCount = 100000;
     AtomicLong respCount = new AtomicLong();
 
     long start = System.currentTimeMillis();
 
     for (int i = 0; i < callCount; i++) {
-      remoteService.asyncCall(
+      asyncService.asyncCall(
           RESPONSE_TIME,
           () -> null,
           o -> {
@@ -39,6 +39,7 @@ public class ScheduledRemoteServiceImplTest {
     long length = System.currentTimeMillis() - inited;
     System.out.println("Length: " + length);
 
-    assertThat(length).isLessThan(RESPONSE_TIME + 100);
+    assertThat(length).isLessThan(RESPONSE_TIME + 50);
   }
+
 }

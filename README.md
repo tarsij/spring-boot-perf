@@ -1,4 +1,4 @@
-# Comparing the performance of synchronous and asynchronous request processing
+# Comparing the performance of synchronous and asynchronous request processing in Spring Boot
 
 The goal is to compare how does a controller perform if it is spending most of its time
 waiting for an answer for a blocking call which could have been served asynchronously as well.

@@ -2,7 +2,7 @@
 
 ## Gatling and IntelliJ
 
-Setting up the project:  
+Setting up a project in IntelliJ:  
 
   - Create a new Project
   - Select 'Maven' as the project type
@@ -18,10 +18,23 @@ Setting up the project:
   - Specify the maven settings
   - Specify the project details
   
-In the generated ```pom.xml``` the compiler for the gatling-maven-plugin has to be disabled if the
-scala-maven-plugin is present too:  
+Run:
+  - with IntelliJ showing the test selector menu:
+    ```
+    right click on the Engine.scala and select run
+    ```
+
+New simulation files should be added to the ```src/test/scala``` folder.
+
+
+## Gatling and maven
+  
+The project comes with two plugins in place: the ```scala-maven-plugin``` and the ```gatling-maven-plugin```.
+Both plugins have their pros and cons.
+
+To omit double compilation we have to disable the compiler for the ```gatling-maven-plugin```:  
   ```
-  <plugin>  
+  <plugin>
     <groupId>io.gatling</groupId>
     <artifactId>gatling-maven-plugin</artifactId>
     <configuration>
@@ -30,21 +43,68 @@ scala-maven-plugin is present too:
   </plugin>
   ```
 
-New simulation files should be added to the ```src/test/scala``` folder.
+### Gatling with the scala-maven-plugin
 
-Run the tests:
-  - with IntelliJ showing the test selector menu:
+Check at http://davidb.github.io/scala-maven-plugin/run-mojo.html
+
+Run:
+  - with main class showing the test selector menu:  
     ```
-    right click on the Engine.scala and select run
+    mvn scala:run -DmainClass=<MainClass>
     ```
-  - with maven scala plugin showing the test selector menu:
+  - with launchers showing the test selector menu:  
     ```
-    mvn scala:run -DmainClass=Engine
+    mvn scala:run -Dlauncher=<LauncherId>
     ```
-  - with maven gatling plugin executing a given test:
+  - with launchers, executing the first and showing the test selector menu:  
+    ```
+    mvn scala:run
+    ```
+  - with the workaround for the system properties executing a given test
+    ```
+    <any of the commands above> -Dgatling.simulationClass=<package.SimulationClass>
+    ```
+
+Pros:
+  - Runs as a plain scala application
+  - Can show a list of available simulations from which the user can select which one to run
+  - with the launchers it is possible to configure multiple configurations
+  - with the launchers it is not necessary to specify the main class. If no launcher is selected
+    then the first one is executed
+  - with the workaround used for the system properties it is possible to pass in the simulation
+    class name
+  
+Cons:
+  - The maven properties/command line parameters are not passed through the system properties
+    A workaround for this issue is to use the properties-maven-plugin to generate a properties
+    file containing the maven properties, then loading the properties in the Engine/IDEPathHelper
+    classes and adding those values to the System properties. The possible command line arguments
+    have to be added to the properties in order to be saved in the file.
+  - Cannot run all the tests in one run
+  - less configurable
+
+### Gatling with the gatling-maven-plugin
+
+Check at https://gatling.io/docs/3.0/extensions/maven_plugin/
+
+Run:
+  - executing a given test:
     ```
     mvn gatling:test -Dgatling.simulationClass=<package.SimulationClass>
     ```
+  - executing all the tests (the ```runMultipleSimulations``` configuration has to be true):
+    ```
+    mvn gatling:test
+    ```
+
+Pros:
+  - The system properties are propagated by default so no workaround is needed
+  - It can execute a single test without any workaround
+  - It can execute all the tests in a single command (the ```runMultipleSimulations``` configuration has to be true)
+  - more configurable
+  
+Cons:
+  - Doesn't have the simulation selector menu option. Either run one predefined test or all the tests
     
 ## Gatling and Docker
 
@@ -72,7 +132,7 @@ Run the tests with docker:
     
 ### Scaling
 
-  - lunch the gatling instances with the -nr (no reports) option:
+  - launch the gatling instances with the -nr (no reports) option:
     ```
     docker run --rm -v $PWD/src/test/resources:/opt/gatling/conf -v $PWD/src/test:/opt/gatling/user-files -v $PWD/reports:/opt/gatling/results denvazh/gatling -s <package-and-simulation-class> -nr
     ```

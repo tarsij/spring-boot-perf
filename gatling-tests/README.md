@@ -1,6 +1,6 @@
-#Gatling performance testing
+# Gatling performance testing
 
-##Gatling and IntelliJ
+## Gatling and IntelliJ
 
 Setting up the project:  
 
@@ -46,7 +46,7 @@ Run the tests:
     mvn gatling:test -Dgatling.simulationClass=<package.SimulationClass>
     ```
     
-##Gatling and Docker
+## Gatling and Docker
 
 Configure the gatling.conf file to reflect the maven structure:
   ```
@@ -70,7 +70,7 @@ Run the tests with docker:
     docker run --rm -v $PWD/src/test/resources:/opt/gatling/conf -v $PWD/src/test:/opt/gatling/user-files -v $PWD/reports:/opt/gatling/results denvazh/gatling -s <package-and-simulation-class>
     ```
     
-###Scaling
+### Scaling
 
   - lunch the gatling instances with the -nr (no reports) option:
     ```

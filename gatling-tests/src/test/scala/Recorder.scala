@@ -4,10 +4,10 @@ import utils.IDEPathHelper
 
 object Recorder extends App {
 
-	val props = new RecorderPropertiesBuilder
-	props.simulationsFolder(IDEPathHelper.mavenSourcesDirectory.toString)
-	props.resourcesFolder(IDEPathHelper.mavenResourcesDirectory.toString)
-	props.simulationPackage("simulations")
+  val props = new RecorderPropertiesBuilder
+  props.simulationsFolder(IDEPathHelper.mavenSourcesDirectory.toString)
+  props.resourcesFolder(IDEPathHelper.mavenResourcesDirectory.toString)
+  props.simulationPackage("simulations")
 
-	GatlingRecorder.fromMap(props.build, Some(IDEPathHelper.recorderConfigFile))
+  GatlingRecorder.fromMap(props.build, Some(IDEPathHelper.recorderConfigFile))
 }

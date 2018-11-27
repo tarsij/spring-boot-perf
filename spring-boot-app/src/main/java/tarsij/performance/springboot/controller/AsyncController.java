@@ -1,6 +1,5 @@
 package tarsij.performance.springboot.controller;
 
-import tarsij.performance.springboot.service.AsyncService;
 import java.util.concurrent.ThreadLocalRandom;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
+import tarsij.performance.springboot.service.AsyncService;
 
 @RestController
 public class AsyncController {
@@ -41,7 +41,7 @@ public class AsyncController {
         ThreadLocalRandom.current().nextLong(min, max),
         () -> new ResponseEntity<>("Hello", HttpStatus.OK),
         deferredResult::setResult
-      );
+    );
 
     return deferredResult;
   }

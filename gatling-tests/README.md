@@ -26,11 +26,22 @@ Run:
 
 New simulation files should be added to the ```src/test/scala``` folder.
 
+If the workaround with the properties-maven-plugin is present, then we have to add a step to the 
+run configurations:
+  - select the ```Run``` menu
+  - select the ```Edit Configurations...```
+  - select ```Engine``` from the left pane
+  - select the ```+``` sign in the ```Before launch``` at the bottom of the pane
+  - select the ```Run Maven Goal``` from the popup
+  - type ```initialize``` in the command-line
+  - move the newly created step before the ```Build``` step
+  
+This will ensure that the maven.properties file is generated and contains the latest configuration
 
 ## Gatling and maven
   
-The project comes with two plugins in place: the ```scala-maven-plugin``` and the ```gatling-maven-plugin```.
-Both plugins have their pros and cons.
+The project comes with two plugins in place: the ```scala-maven-plugin``` and the 
+```gatling-maven-plugin```. Both plugins have their pros and cons.
 
 To omit double compilation we have to disable the compiler for the ```gatling-maven-plugin```:  
   ```
@@ -100,11 +111,13 @@ Run:
 Pros:
   - The system properties are propagated by default so no workaround is needed
   - It can execute a single test without any workaround
-  - It can execute all the tests in a single command (the ```runMultipleSimulations``` configuration has to be true)
+  - It can execute all the tests in a single command (the ```runMultipleSimulations``` 
+    configuration has to be true)
   - more configurable
   
 Cons:
-  - Doesn't have the simulation selector menu option. Either run one predefined test or all the tests
+  - Doesn't have the simulation selector menu option.
+    Either run one predefined test or all the tests.
     
 ## Gatling and Docker
 
@@ -137,8 +150,10 @@ Run the tests with docker:
     docker run --rm -v $PWD/src/test/resources:/opt/gatling/conf -v $PWD/src/test:/opt/gatling/user-files -v $PWD/reports:/opt/gatling/results denvazh/gatling -s <package-and-simulation-class> -nr
     ```
   - collect the generated simulation.log files (rename them so they won’t clash)
-  - place them into a <simulation-folder-with-the-collected-logs> within the results folder of a Gatling instance
-  - generate the reports with the -ro (reports only) option (gatling will consume all the log files within the given folder):
+  - place them into a <simulation-folder-with-the-collected-logs> within the results folder of a
+    Gatling instance
+  - generate the reports with the -ro (reports only) option (gatling will consume all the
+    log files within the given folder):
     ```
     docker run --rm -v $PWD/src/test/resources:/opt/gatling/conf -v $PWD/src/test:/opt/gatling/user-files -v $PWD/reports:/opt/gatling/results denvazh/gatling -ro /opt/gatling/results/<simulation-folder-with-the-collected-logs>
     ```

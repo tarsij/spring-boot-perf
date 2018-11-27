@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
@@ -23,7 +23,7 @@
     <gatling.resourcesFolder>src/test/resources</gatling.resourcesFolder>
     <gatling.resultsFolder>reports</gatling.resultsFolder>
     <gatling.simulationClass></gatling.simulationClass>
-    <gatling.runDescription></gatling.runDescription>
+    <gatling.runDescription>-</gatling.runDescription>
     <gatling.noReports>false</gatling.noReports>
     <gatling.reportsOnly></gatling.reportsOnly>
   </properties>
@@ -100,7 +100,8 @@
            to the scala class when executed with the scala-maven-plugin.
            To solve this issue we use the properties-maven-plugin to save
            the maven properties in a file, which in turn is loaded by the
-           scala app -->
+           scala app.
+           Check at https://www.mojohaus.org/properties-maven-plugin -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>properties-maven-plugin</artifactId>
@@ -123,9 +124,10 @@
            tests. in order to execute the app we have to specify the main class
            with the -DmainClass parameter. As the scala executor does not pass in
            the maven properties to the app we use the properties-maven-plugin
-           as workaround. The lunchers are an alternative to the -DmainClass.
-           If lunchers are specified but no luncher is selected, then the first
-           luncher is executed ( -Dluncher=<luncherId> ) -->
+           as workaround. The launchers are an alternative to the -DmainClass.
+           If launchers are specified but no launcher is selected, then the first
+           launcher is executed ( -Dlauncher=<launcherId> )
+           Check at http://davidb.github.io/scala-maven-plugin/run-mojo.html -->
       <plugin>
         <groupId>net.alchim31.maven</groupId>
         <artifactId>scala-maven-plugin</artifactId>
@@ -164,7 +166,8 @@
            gatling tests. It does not invoke the Engine but runs the tests
            directly. The test class is specified with the -Dgatling.simulationClass
            commandline parameter. The plugin passes the maven properties as
-           system properties. -->
+           system properties.
+           Check at https://gatling.io/docs/3.0/extensions/maven_plugin/ -->
       <plugin>
         <groupId>io.gatling</groupId>
         <artifactId>gatling-maven-plugin</artifactId>

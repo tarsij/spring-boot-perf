@@ -2,12 +2,12 @@ package tarsij.performance.springboot.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import tarsij.performance.springboot.service.impl.AsyncServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.async.DeferredResult;
+import tarsij.performance.springboot.service.impl.AsyncServiceImpl;
 
 public class AsyncControllerTest {
 
@@ -34,8 +34,7 @@ public class AsyncControllerTest {
     while (respCount < callCount) {
       if (deferredResults.get(respCount).hasResult()) {
         respCount++;
-      }
-      else {
+      } else {
         try {
           Thread.sleep(0, 1);
         } catch (InterruptedException ignored) { /*ignored*/ }

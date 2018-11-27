@@ -22,7 +22,8 @@
     <lombok.version>1.18.4</lombok.version>
 
     <service-name>${project.artifactId}</service-name>
-    <spring-boot.application.name>${service-name}-${project.parent.version}</spring-boot.application.name>
+    <spring-boot.application.name>${service-name}-${project.parent.version}
+    </spring-boot.application.name>
     <spring-boot.start-class>tarsij.performance.springboot.Application</spring-boot.start-class>
     <docker.image.name>${service-name}</docker.image.name>
     <docker.image.version>%t</docker.image.version>

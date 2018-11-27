@@ -10,19 +10,19 @@ import scala.language.postfixOps
 
 class NginxFixedUser extends Simulation {
 
-  val dockerPrefix : String = "" // "docker.for.mac."
+  val dockerPrefix: String = "" // "docker.for.mac."
 
-  val servicetUrl : String = s"http://${dockerPrefix}localhost:32768"
+  val servicetUrl: String = s"http://${dockerPrefix}localhost:32768"
 
-  val callRate : Int = 8000
-  val approxTestDuration : Duration = 2 minutes
-  val meanResponseTime : Int = 10
-  val responseDeviation : Int = 0
+  val callRate: Int = 8000
+  val approxTestDuration: Duration = 2 minutes
+  val meanResponseTime: Int = 10
+  val responseDeviation: Int = 0
 
-  val userCount : Int = callRate / meanResponseTime
+  val userCount: Int = callRate / meanResponseTime
   val repeatCount: Int = approxTestDuration.toMillis.toInt / meanResponseTime
-  val minResponseTime : Int = meanResponseTime - responseDeviation
-  val maxResponseTime : Int = meanResponseTime + responseDeviation + 1
+  val minResponseTime: Int = meanResponseTime - responseDeviation
+  val maxResponseTime: Int = meanResponseTime + responseDeviation + 1
 
   System.out.println(s"Call rate: $callRate req/s")
   System.out.println(s"User count: $userCount usr")
@@ -31,7 +31,7 @@ class NginxFixedUser extends Simulation {
   System.out.println(s"Max response time: $maxResponseTime ms")
   System.out.println(s"Total request count: ${userCount * repeatCount} req")
 
-  val httpConf : HttpProtocolBuilder = http
+  val httpConf: HttpProtocolBuilder = http
     .baseUrl(servicetUrl)
     .acceptHeader("text/html,application/xhtml+xml,application/xml,application/json;q=0.9,*/*;q=0.8")
     .doNotTrackHeader("1")
@@ -39,7 +39,7 @@ class NginxFixedUser extends Simulation {
     .acceptEncodingHeader("gzip, deflate")
     .userAgentHeader("Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.0")
 
-  val scn : ScenarioBuilder = scenario("GetHelloScenario")
+  val scn: ScenarioBuilder = scenario("GetHelloScenario")
     .repeat(repeatCount, "call-per-user") {
       exec(http("hello")
         .get("")

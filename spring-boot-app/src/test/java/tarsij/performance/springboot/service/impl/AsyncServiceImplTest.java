@@ -2,9 +2,9 @@ package tarsij.performance.springboot.service.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import tarsij.performance.springboot.service.AsyncService;
 import java.util.concurrent.atomic.AtomicLong;
 import org.junit.Test;
+import tarsij.performance.springboot.service.AsyncService;
 
 public class AsyncServiceImplTest {
 
@@ -32,7 +32,7 @@ public class AsyncServiceImplTest {
 
     while (respCount.get() < callCount) {
       try {
-        Thread.sleep(0,1);
+        Thread.sleep(0, 1);
       } catch (InterruptedException ignored) { /*ignored*/ }
     }
 

@@ -15,11 +15,11 @@ class AsyncRestFixedUser extends Simulation {
   val servicetUrl: String = s"http://${dockerPrefix}localhost:8888"
 
   val callRate: Int = 8000
-  val approxTestDuration: Duration = 2 seconds //minutes
-  val meanResponseTime: Int = 100
+  val approxTestDuration: Duration = 2 minutes
+  val meanResponseTime: Int = 10
   val responseDeviation: Int = 0
 
-  val userCount: Int = callRate / meanResponseTime
+  val userCount: Int = callRate * meanResponseTime / 1000
   val repeatCount: Int = approxTestDuration.toMillis.toInt / meanResponseTime
   val minResponseTime: Int = meanResponseTime - responseDeviation
   val maxResponseTime: Int = meanResponseTime + responseDeviation + 1

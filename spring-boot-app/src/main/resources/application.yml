@@ -9,3 +9,8 @@ server:
     max-connections: 60000
     accept-count: 100
     max-threads: 200
+
+service:
+  response:
+    duration: 100
+    deviation: 0

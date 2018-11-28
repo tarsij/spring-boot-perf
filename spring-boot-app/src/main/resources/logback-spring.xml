@@ -4,7 +4,7 @@
   <include resource="org/springframework/boot/logging/logback/base.xml"/>
   <jmxConfigurator/>
 
-  <logger additivity="false" level="DEBUG" name="com.jci.taas.event">
+  <logger additivity="false" level="DEBUG" name="tarsij">
     <appender-ref ref="CONSOLE"/>
   </logger>
 

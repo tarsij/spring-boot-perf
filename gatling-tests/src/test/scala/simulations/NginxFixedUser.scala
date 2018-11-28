@@ -19,7 +19,7 @@ class NginxFixedUser extends Simulation {
   val meanResponseTime: Int = 10
   val responseDeviation: Int = 0
 
-  val userCount: Int = callRate / meanResponseTime
+  val userCount: Int = callRate * meanResponseTime / 1000
   val repeatCount: Int = approxTestDuration.toMillis.toInt / meanResponseTime
   val minResponseTime: Int = meanResponseTime - responseDeviation
   val maxResponseTime: Int = meanResponseTime + responseDeviation + 1

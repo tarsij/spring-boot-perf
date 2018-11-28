@@ -11,10 +11,13 @@ import tarsij.performance.springboot.service.impl.AsyncServiceImpl;
 
 public class AsyncControllerTest {
 
-  private static final long MIN_RESPONSE_TIME = 500L;
-  private static final long MAX_RESPONSE_TIME = 501L;
+  private static final long DEFAULT_RESPONSE_DURATION = 500L;
+  private static final long DEFAULT_RESPONSE_DEVIATION = 0L;
 
-  private AsyncController asyncController = new AsyncController(new AsyncServiceImpl<>());
+  private AsyncController asyncController = new AsyncController(
+      new AsyncServiceImpl<>(),
+      DEFAULT_RESPONSE_DURATION,
+      DEFAULT_RESPONSE_DEVIATION);
 
   @Test
   public void asyncController_WHEN_many_concurrent_calls() {
@@ -25,7 +28,7 @@ public class AsyncControllerTest {
     long start = System.currentTimeMillis();
 
     for (int i = 0; i < callCount; i++) {
-      deferredResults.add(asyncController.getAsyncHello(MIN_RESPONSE_TIME, MAX_RESPONSE_TIME));
+      deferredResults.add(asyncController.getAsyncHello(-1, -1));
     }
 
     long inited = System.currentTimeMillis();
@@ -44,7 +47,7 @@ public class AsyncControllerTest {
     long length = System.currentTimeMillis() - inited;
     System.out.println("Length: " + length);
 
-    assertThat(length).isLessThan(MAX_RESPONSE_TIME + 100);
+    assertThat(length).isLessThan(DEFAULT_RESPONSE_DURATION + DEFAULT_RESPONSE_DEVIATION + 100);
   }
 
 }

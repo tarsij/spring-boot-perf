@@ -20,6 +20,7 @@
 
     <fabric8-maven-plugin.version>3.5.42</fabric8-maven-plugin.version>
     <lombok.version>1.18.4</lombok.version>
+    <slf4j.version>1.7.25</slf4j.version>
 
     <service-name>${project.artifactId}</service-name>
     <spring-boot.application.name>${service-name}-${project.parent.version}
@@ -33,6 +34,26 @@
   </properties>
 
   <dependencies>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-ext</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${lombok.version}</version>
+      <scope>compile</scope>
+    </dependency>
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
@@ -41,13 +62,6 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>${lombok.version}</version>
-      <scope>provided</scope>
     </dependency>
 
     <dependency>
@@ -63,15 +77,20 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${maven-compiler-plugin.version}</version>
-        <configuration>
-          <annotationProcessorPaths>
-            <path>
-              <groupId>org.projectlombok</groupId>
-              <artifactId>lombok</artifactId>
-              <version>${lombok.version}</version>
-            </path>
-          </annotationProcessorPaths>
-        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok-maven-plugin</artifactId>
+        <version>1.18.4.0</version>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>delombok</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
 
       <plugin>
@@ -112,6 +131,13 @@
             <configuration>
               <profile>fabric8-profile</profile>
               <mode>kubernetes</mode>
+              <resources>
+                <labels>
+                  <all>
+                    <project>spring-boot-perf</project>
+                  </all>
+                </labels>
+              </resources>
               <generator>
                 <config>
                   <spring-boot>
@@ -121,13 +147,6 @@
                   </spring-boot>
                 </config>
               </generator>
-              <resources>
-                <labels>
-                  <all>
-                    <project>TaaS</project>
-                  </all>
-                </labels>
-              </resources>
               <enricher>
                 <includes>
                   <include>fmp-controller</include>

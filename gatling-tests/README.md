@@ -143,6 +143,19 @@ Run the tests with docker:
     docker run --rm -v $PWD/src/test/resources:/opt/gatling/conf -v $PWD/src/test:/opt/gatling/user-files -v $PWD/reports:/opt/gatling/results denvazh/gatling -s <package-and-simulation-class>
     ```
     
+### Docker accessing the local environment
+
+When the gatling tests are running in a docker environment on a mac and have to access a service 
+running on the host machine, then the service's url has to be prepended with ```docker.for.mac.```,
+so instead of: 
+```
+  http://localhost:8888
+```
+use:
+```
+  http://docker.for.mac.localhost:8888
+```
+    
 ### Scaling
 
   - launch the gatling instances with the -nr (no reports) option:

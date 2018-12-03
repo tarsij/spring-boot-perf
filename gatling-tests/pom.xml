@@ -26,6 +26,12 @@
     <gatling.runDescription>-</gatling.runDescription>
     <gatling.noReports>false</gatling.noReports>
     <gatling.reportsOnly></gatling.reportsOnly>
+
+    <test.serviceUrl></test.serviceUrl>
+    <test.reqPerSec></test.reqPerSec>
+    <test.userCount></test.userCount>
+    <test.rampUpDuration></test.rampUpDuration>
+    <test.testDuration></test.testDuration>
   </properties>
 
   <dependencyManagement>

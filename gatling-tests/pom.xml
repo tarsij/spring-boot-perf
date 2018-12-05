@@ -14,7 +14,7 @@
     <scala-maven-plugin.version>3.4.4</scala-maven-plugin.version>
     <scala-main.version>2.12</scala-main.version>
     <scala.version>${scala-main.version}.7</scala.version>
-    <gatling.version>3.0.1</gatling.version>
+    <gatling.version>3.0.1.1</gatling.version>
 
     <gatling.simulationsFolder>src/test/scala</gatling.simulationsFolder>
     <gatling.resourcesFolder>src/test/resources</gatling.resourcesFolder>

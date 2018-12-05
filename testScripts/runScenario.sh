@@ -8,7 +8,7 @@ projDir="$scriptDir/.."
 serviceResponseTime=10
 tomcatMaxThreads=20
 
-reportFolder="reports"
+reportFolder="reports/scenarios"
 reportFileName="results.csv"
 simulationClass="simulations.AsyncRestThrottled"
 serviceUrl="http://localhost:8888"
@@ -90,6 +90,8 @@ reportFile="${reportFolder}/${reportFileName}"
 gatlingFolder="${reportFolder}/gatling"
 
 pushd "${projDir}" > /dev/null
+
+mkdir -p "${reportFolder}"
 
 echo
 echo "================================================================================"
@@ -183,8 +185,6 @@ echo
 echo "================================================================================"
 echo "Interpret the results:"
 echo
-
-mkdir -p reports
 
 if [ ! -f "${reportFile}" ]; then
   echo "Simulation,Tomcat,Threads,Daemon,Peak,RampUp,Duration,User,Ideal Req/s,Max Count,Max Req/s,Count,Req/s,Min,50th,75th,95th,99th,Max,Mean,Deviation,Quick,Medium,Slow,Failed,Test Folder" >> "${reportFile}"

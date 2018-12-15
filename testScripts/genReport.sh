@@ -5,18 +5,18 @@ projDir="$scriptDir/.."
 
 # Defaults
 
-reportFolder="reports/test"
+reportFolder="reports/test-sync"
 reportFileName="report.csv"
 
-simulationName="AsyncRestThrottled"
+simulationName="SyncRestThrottled"
 htmlReportName="report.html"
 reportFolderFormat="${simulationName}-srt-%s-tmt-%s-uc-%s-rps-%s"
 
 declare -a colors=('255, 99, 132' '54, 162, 235' '255, 206, 86' '75, 192, 192' '153, 102, 255' '255, 159, 64')
 
-declare -a srtList=(10 50 200)
-declare -a tmtList=(10 20 50)
-declare -a ucList=(2000 2500)
+declare -a srtList=(10 50 100 150 200)
+declare -a tmtList=(120 600 1600 2400 6000 9000)
+declare -a ucList=(2500)
 declare -a rpsList=(5000 6000 7000 8000 9000 10000)
 
 declare -a fieldList=("Req/s|mean_rps|Mean RPS @ no. of threads"
@@ -86,7 +86,7 @@ function milli2Float {
   local value="${1:-0}"
   local negative=""
 
-  if [ ${value} -lt 0 ]; then
+  if [[ ${value} -lt 0 ]]; then
     negative="-"
     ((value=-value))
   fi
@@ -97,7 +97,7 @@ function milli2Float {
   ((valueD/=1000))
   ((valueP-=valueD*1000))
 
-  if [ "${valueP}" == "0" ]; then
+  if [[ "${valueP}" == "0" ]]; then
     echo "${negative}${valueD}"
   else
     valueP=$(printf %03d ${valueP})
@@ -303,11 +303,11 @@ function chartDataset {
   local color="${3}"
   local first="${4}"
 
-  if [ "${first}" != "true" ]; then
+  if [[ "${first}" != "true" ]]; then
     echo "            },"
   fi
   echo "            {"
-  echo "              label: '${tmt}',"
+  echo "              label: '${label}',"
   echo "              data: [${data}],"
   echo "              backgroundColor: ["
   echo "                'rgba(${color}, 0.2)'"
@@ -357,7 +357,7 @@ function getDatasetFor {
               folderName="${folderName%%\|\|\|\|\|\|\|\|\|\|*}"
 #              printf "${folderName}\n\n"
 
-              if [ -f "${reportFolder}/${folderName}/${reportFileName}" ]; then
+              if [[ -f "${reportFolder}/${folderName}/${reportFileName}" ]]; then
 
 #                echo "FOUND"
 
@@ -368,13 +368,13 @@ function getDatasetFor {
                 local firstLine="true"
                 local line
                 while IFS='' read -r line || [[ -n "$line" ]]; do
-                  local fields
+                  local fields=()
                   IFS=',' read -ra fields <<< "${line}"
-                  if [ "${firstLine}" == "true" ]; then
+                  if [[ "${firstLine}" == "true" ]]; then
                     firstLine="false"
                     local fieldIndex
                     for fieldIndex in "${!fields[@]}"; do
-                        if [ "${fields[fieldIndex]}" == "${fieldName}" ]; then
+                        if [[ "${fields[fieldIndex]}" == "${fieldName}" ]]; then
                           fieldNameIndex=${fieldIndex}
   #                        echo "Field name index: ${fieldNameIndex}"
                         fi

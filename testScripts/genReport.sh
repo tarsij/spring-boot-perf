@@ -3,59 +3,8 @@
 scriptDir="$(cd "$(dirname "$0")" ; pwd -P )"
 projDir="$scriptDir/.."
 
-pushd "${projDir}" > /dev/null
-
-# Defaults
-
-reportFolder="reports/test-sync"
-reportFileName="report.csv"
-
-simulationName="SyncRestThrottled"
-htmlReportName="report.html"
-reportFolderFormat="${simulationName}-srt-%s-tmt-%s-uc-%s-rps-%s"
-
-declare -a colors=('255, 99, 132' '54, 162, 235' '255, 206, 86' '75, 192, 192' '153, 102, 255' '255, 159, 64')
-
-declare -a srtList=(10 50 100 150 200)
-declare -a tmtList=(120 600 1600 2400 6000 9000)
-declare -a ucList=(2500)
-declare -a rpsList=(5000 6000 7000 8000 9000 10000)
-
-declare -a fieldList=("Req/s|mean_rps|Mean RPS @ no. of threads"
-                      "Mean|mean_response_time|Mean response time @ no. of threads"
-                      "Failed|error|Errors @ no. of threads"
-                      "95th|95th_percentile|95th percentile @ no. of threads"
-                      "99th|99th_percentile|99th percentile @ no. of threads"
-                      "Max|max_percentile|Max percentile @ no. of threads"
-                      "Peak|peak_threads|Peak threads @ no. of threads"
-                      )
-
-# ##################################################################################################
-
-function fieldName {
-  local field="${1}"
-  local separator="${2:-|}"
-
-  field="${field%%\|*}"
-  echo "${field}"
-}
-
-function fieldScriptName {
-  local field="${1}"
-  local separator="${2:-|}"
-
-  field="${field#*\|}"
-  field="${field%\|*}"
-  echo "${field}"
-}
-
-function fieldReportName {
-  local field="${1}"
-  local separator="${2:-|}"
-
-  field="${field##*\|}"
-  echo "${field}"
-}
+source ${scriptDir}/json.sh
+source ${scriptDir}/float.sh
 
 # ##################################################################################################
 
@@ -64,94 +13,6 @@ function joinValues {
 
   shift
   echo "$*"
-}
-
-# ##################################################################################################
-
-function float2Milli {
-  local value="${1:-0}"
-
-  valueD=${value%%.*}
-  if [[ "${value}" == *"."* ]]; then
-    valueP=${value##*.}
-  else
-    valueP=""
-  fi
-  valueP=${valueP}000
-  valueP=${valueP:0:3}
-  echo "${valueD}${valueP}"
-}
-
-# --------------------------------------------------------------------------------------------------
-
-function milli2Float {
-  local value="${1:-0}"
-  local negative=""
-
-  if [[ ${value} -lt 0 ]]; then
-    negative="-"
-    ((value=-value))
-  fi
-
-  local valueD=${value}
-  local valueP=${value}
-
-  ((valueD/=1000))
-  ((valueP-=valueD*1000))
-
-  if [[ "${valueP}" == "0" ]]; then
-    echo "${negative}${valueD}"
-  else
-    valueP=$(printf %03d ${valueP})
-    valueP=${valueP%00}
-    valueP=${valueP%0}
-    echo "${negative}${valueD}.${valueP}"
-  fi
-}
-
-# --------------------------------------------------------------------------------------------------
-
-function floatSum {
-  local value1=$(float2Milli ${1:-0})
-  local value2=$(float2Milli ${2:-0})
-
-  ((value1+=value2))
-
-  echo "$(milli2Float ${value1})"
-}
-
-# --------------------------------------------------------------------------------------------------
-
-function floatSub {
-  local value1=$(float2Milli ${1:-0})
-  local value2=$(float2Milli ${2:-0})
-
-  ((value1-=value2))
-
-  echo "$(milli2Float ${value1})"
-}
-
-# --------------------------------------------------------------------------------------------------
-
-function floatDiv {
-  local value1=$(float2Milli $(float2Milli ${1:-0}))
-  local value2=$(float2Milli ${2:-0})
-
-  ((value1/=value2))
-
-  echo "$(milli2Float ${value1})"
-}
-
-# --------------------------------------------------------------------------------------------------
-
-function floatMul {
-  local value1=$(float2Milli ${1:-0})
-  local value2=$(float2Milli ${2:-0})
-
-  ((value1*=value2))
-
-  value1=$(milli2Float ${value1})
-  echo "$(milli2Float ${value1%%.*})"
 }
 
 # ##################################################################################################
@@ -321,94 +182,173 @@ function chartDataset {
   echo "              fill: false"
 }
 
+# ==================================================================================================
+#  prepareLoopFields
+#  ------------------------------
+#  - usage: prepareLoopFields "<fieldsConfig>" "<field1>" ... "<fieldN>"
+#
+#  - it is just a performance improvement: because json is a costly operation the field values are
+#    prefetched and stored in an array
+#  - NOTE: it creates some global variables for the loopField so it can access them
 # --------------------------------------------------------------------------------------------------
+function prepareLoopFields {
+  local __loopFields_fieldsConfig="${1}"
+  shift
+  local __loopFields_fieldNames=("${@}")
 
-function getDatasetFor {
-  local fieldName="${1}"
-  local reportFolder="${2}"
-  local reportFileName="${3}"
+  local __loopFields_fieldName
+  for __loopFields_fieldName in "${__loopFields_fieldNames[@]}"; do
+      local __loopFields_fieldConfig
+      json "__loopFields_fieldConfig = __loopFields_fieldsConfig.[] | select(.name==\"${__loopFields_fieldName}\")"
 
-  local format="${4}||||||||||"
-  local paramList1=()
-  local paramList2=()
-  local paramList3=()
-  local paramList4=()
-  local paramList5=()
-  local paramList6=()
-
-  read -r -a paramList1 <<< "${5:--}"
-  read -r -a paramList2 <<< "${6:--}"
-  read -r -a paramList3 <<< "${7:--}"
-  read -r -a paramList4 <<< "${8:--}"
-  read -r -a paramList5 <<< "${9:--}"
-  read -r -a paramList6 <<< "${10:--}"
-
-  local result=""
-
-  for param1 in "${paramList1[@]}"; do
-    for param2 in "${paramList2[@]}"; do
-      for param3 in "${paramList3[@]}"; do
-        for param4 in "${paramList4[@]}"; do
-          for param5 in "${paramList5[@]}"; do
-            for param6 in "${paramList6[@]}"; do
-
-#              echo "${param1} ${param2} ${param3} ${param4} ${param5} ${param6}"
-
-              local folderName=""
-              printf -v folderName -- "${format}" "${param1}" "${param2}" "${param3}" "${param4}" "${param5}" "${param6}"
-              folderName="${folderName%%\|\|\|\|\|\|\|\|\|\|*}"
-#              printf "${folderName}\n\n"
-
-              if [[ -f "${reportFolder}/${folderName}/${reportFileName}" ]]; then
-
-#                echo "FOUND"
-
-                local sum=0
-                local cnt=0
-
-                local fieldNameIndex=0
-                local firstLine="true"
-                local line
-                while IFS='' read -r line || [[ -n "$line" ]]; do
-                  local fields=()
-                  IFS=',' read -ra fields <<< "${line}"
-                  if [[ "${firstLine}" == "true" ]]; then
-                    firstLine="false"
-                    local fieldIndex
-                    for fieldIndex in "${!fields[@]}"; do
-                        if [[ "${fields[fieldIndex]}" == "${fieldName}" ]]; then
-                          fieldNameIndex=${fieldIndex}
-  #                        echo "Field name index: ${fieldNameIndex}"
-                        fi
-                    done
-                  else
-                    sum=$(floatSum ${sum} ${fields[fieldNameIndex]})
-                    ((cnt++))
-                  fi
-                done < "${reportFolder}/${folderName}/${reportFileName}"
-
-                result="${result},$(floatDiv ${sum} ${cnt})"
-              fi
-            done
-          done
-        done
-      done
-    done
+      # --------------------------------------------------------------------------------------------
+      # !!! NOTE: these variables are global so the loopFields can access them
+      # --------------------------------------------------------------------------------------------
+      eval "json __loopFields_${__loopFields_fieldName}_fieldValues = __loopFields_fieldConfig.values[]"
   done
-
-  echo "${result:1}"
 }
 
-# ##################################################################################################
+# ==================================================================================================
+#  loopFields
+#  ------------------------------
+#  - usage: loopFields "<fieldsConfig>" "<field1>" ... "<fieldN>" "<lambda>"
+#
+#  - loops over the fields specified
+#  - it uses the global arrays defined by the prepareLoopFields
+# --------------------------------------------------------------------------------------------------
+function loopFields {
+  local __loopFields_fieldsConfig="${1}"
+  shift
 
-date > /dev/tty
+  if [[ "${#}" == "1" ]]; then
+    eval "${1}"
+  else
+    local __loopFields_fieldName="${1}"
+    shift
+    local __loopFields_fieldNamesWithLambda=("${@}")
 
-mkdir -p "${reportFolder}"
-echo "" > "${reportFolder}/${htmlReportName}"
+    local __loopFields_fieldValues=()
+    eval "__loopFields_fieldValues=(\"\${__loopFields_${__loopFields_fieldName}_fieldValues[@]}\")"
 
-echo "<html lang=\"en\">
+    local __loopFields_fieldValue
+    for __loopFields_fieldValue in "${__loopFields_fieldValues[@]}"; do
+      eval "local ${__loopFields_fieldName}=\"${__loopFields_fieldValue}\""
+
+      loopFields "${__loopFields_fieldsConfig}" "${__loopFields_fieldNamesWithLambda[@]}"
+    done
+  fi
+}
+
+# ==================================================================================================
+#  loopFields2
+#  ------------------------------
+#  - usage: loopFields2 "<fieldsConfig>" "<field1>" ... "<fieldN>" "<lambda>"
+#
+#  - loops over the fields specified
+#  - it parses the json configuration for the field values
+#  - because the json operation is costly its performance is much worse than of the loopFields
+#    which uses predeclared arrays
+# --------------------------------------------------------------------------------------------------
+function loopFields2 {
+  local __loopFields_fieldsConfig="${1}"
+  shift
+
+  if [[ "${#}" == "1" ]]; then
+    eval "${1}"
+  else
+    local __loopFields_fieldName="${1}"
+    shift
+    local __loopFields_fieldNamesWithLambda=("${@}")
+
+    local __loopFields_field
+    json "__loopFields_field = __loopFields_fieldsConfig.[] | select(.name==\"${__loopFields_fieldName}\")"
+
+    local __loopFields_fieldValues=()
+    json __loopFields_fieldValues = __loopFields_field.values[]
+
+    local __loopFields_fieldValue
+    for __loopFields_fieldValue in "${__loopFields_fieldValues[@]}"; do
+      eval "local ${__loopFields_fieldName}=\"${__loopFields_fieldValue}\""
+
+      loopFields2 "${__loopFields_fieldsConfig}" "${__loopFields_fieldNamesWithLambda[@]}"
+    done
+  fi
+}
+
+# ==================================================================================================
+#  generateReport
+#  ------------------------------
+#  - usage: generateReport
+#
+#  - generates the html report
+# --------------------------------------------------------------------------------------------------
+function generateReport {
+
+  local fieldsConfig
+  json fieldsConfig = config.fields
+
+  local testName
+  json testName = config.testName
+
+  local scenarioFolderPattern
+  json scenarioFolderPattern = config.scenarioFolderPattern
+
+  local scenarioFileNamePattern
+  json scenarioFileNamePattern = config.scenarioFileNamePattern
+
+  # ------------------------------------------------------------------------------------------------
+
+  local report
+  json report = config.report
+
+  # ------------------------------------------------------------------------------------------------
+
+  local header
+  json header = report.header
+
+  local headerFieldNames=()
+  json headerFieldNames = header.fieldNames[]
+
+  # ------------------------------------------------------------------------------------------------
+
+  local dataset
+  json dataset = report.dataset
+
+  local datasetFieldNames=()
+  json datasetFieldNames = dataset.fieldNames[]
+
+  # ------------------------------------------------------------------------------------------------
+
+  local axis
+  json axis = report.axis
+
+  local axisFieldName
+  json axisFieldName = axis.fieldName
+
+  local axisValues=()
+  json "axisValues = config.fields[] | select(.name==\"${axisFieldName}\") | .values[]"
+
+  # ------------------------------------------------------------------------------------------------
+
+  local singleMatchFieldNames=()
+  json "singleMatchFieldNames = config.fields[] | select(.type==\"singleMatch\") | .name"
+
+  # ------------------------------------------------------------------------------------------------
+
+  local rows=()
+  json rows = report.rows[]
+
+  # ------------------------------------------------------------------------------------------------
+
+  prepareLoopFields "${fieldsConfig}" "${headerFieldNames[@]}" "${datasetFieldNames[@]}" "${axisFieldName}" "${singleMatchFieldNames[@]}"
+
+  # ------------------------------------------------------------------------------------------------
+  # create the report header
+  # ------------------------------------------------------------------------------------------------
+
+  echo "<html lang=\"en\">
   <head>
-    <title>Report for ${simulationName}</title>
+    <title>Report for ${testName}</title>
     <script src=\"https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js\"></script>
     <style>
       html, body {
@@ -452,82 +392,216 @@ echo "<html lang=\"en\">
       }
     </style>
   </head>
-  <body>" >> "${reportFolder}/${htmlReportName}"
+  <body>"
 
-      echo "$(tableStart)" >> "${reportFolder}/${htmlReportName}"
+  # ------------------------------------------------------------------------------------------------
+  # create the table
+  # ------------------------------------------------------------------------------------------------
 
-        ##################################################################
+  tableStart
 
-        echo "$(tableHeadingStart)" >> "${reportFolder}/${htmlReportName}"
-          echo "$(tableRowStart)" >> "${reportFolder}/${htmlReportName}"
-            echo "$(tableColumnHead "&nbsp;")" >> "${reportFolder}/${htmlReportName}"
-            for srt in "${srtList[@]}"; do
-              echo "$(tableColumnHead "@ ${srt}ms")" >> "${reportFolder}/${htmlReportName}"
-            done
-          echo "$(tableRowEnd)" >> "${reportFolder}/${htmlReportName}"
-        echo "$(tableHeadingEnd)" >> "${reportFolder}/${htmlReportName}"
+    # ----------------------------------------------------------------------------------------------
+    # table header row
+    # ----------------------------------------------------------------------------------------------
 
-        ##################################################################
+    tableHeadingStart
+      tableRowStart
 
-        echo "$(tableBodyStart)" >> "${reportFolder}/${htmlReportName}"
+        tableColumnHead "&nbsp;"
 
-          for field in "${fieldList[@]}"; do
+        local headerLabelPattern
+        json headerLabelPattern = header.label
 
-            fieldScriptName="$(fieldScriptName "${field}")"
-            fieldReportName="$(fieldReportName "${field}")"
+        loopFields "${fieldsConfig}" "${headerFieldNames[@]}" '
+          eval "local headerLabel=\"${headerLabelPattern}\""
+          tableColumnHead "${headerLabel}"
+        '
 
-            echo "$(tableRowStart)" >> "${reportFolder}/${htmlReportName}"
-              echo "$(firstColumn "${fieldReportName}")" >> "${reportFolder}/${htmlReportName}"
-              for srt in "${srtList[@]}"; do
-                 echo "$(declareCanvas "srt_${srt}_${fieldScriptName}")" >> "${reportFolder}/${htmlReportName}"
-              done
-            echo "$(tableRowEnd)" >> "${reportFolder}/${htmlReportName}"
+      tableRowEnd
+    tableHeadingEnd
 
-           done
+    # ----------------------------------------------------------------------------------------------
+    # table data rows with the canvas declarations
+    # ----------------------------------------------------------------------------------------------
 
-        echo "$(tableBodyEnd)" >> "${reportFolder}/${htmlReportName}"
+    tableBodyStart
 
-        ##################################################################
+      local row
+      for row in "${rows[@]}"; do
+        local scriptName
+        json scriptName = row.scriptName
 
-      echo "$(tableEnd)" >> "${reportFolder}/${htmlReportName}"
+        local text
+        json text = row.text
 
-      ##############################################################################################
-      ##############################################################################################
-      ##############################################################################################
+        tableRowStart
 
-      echo "$(chartScriptStart)" >> "${reportFolder}/${htmlReportName}"
+          firstColumn "${text}"
 
-        for field in "${fieldList[@]}"; do
-
-          fieldName="$(fieldName "${field}")"
-          fieldScriptName="$(fieldScriptName "${field}")"
-
-          for srt in "${srtList[@]}"; do
-            echo "$(chartStart "srt_${srt}_${fieldScriptName}")" >> "${reportFolder}/${htmlReportName}"
-              labels=$(joinValues , ${rpsList[@]})
-              echo "$(chartLabels ${labels})" >> "${reportFolder}/${htmlReportName}"
-              echo "$(chartDatasetsStart)" >> "${reportFolder}/${htmlReportName}"
-                colorIndex=0
-                first="true"
-                for tmt in "${tmtList[@]}"; do
-                  data="$(getDatasetFor "${fieldName}" "${reportFolder}" "${reportFileName}" "${reportFolderFormat}" "${srt}" "${tmt}" "${ucList[*]}" "${rpsList[*]}")"
-                  echo "$(chartDataset "${tmt}" "${data}" "${colors[colorIndex]}" "${first}")" >> "${reportFolder}/${htmlReportName}"
-                  ((colorIndex++))
-                  first="false"
-                done
-              echo "$(chartDatasetsEnd)" >> "${reportFolder}/${htmlReportName}"
-            echo "$(chartEnd)" >> "${reportFolder}/${htmlReportName}"
+          local chartNamePattern="${scriptName}"
+          local headerFieldName
+          for headerFieldName in "${headerFieldNames[@]}"; do
+            chartNamePattern="${chartNamePattern}_${headerFieldName}_\${${headerFieldName}}"
           done
 
-        done
+          loopFields "${fieldsConfig}" "${headerFieldNames[@]}" '
+            eval "local chartName=\"${chartNamePattern}\""
+            declareCanvas "${chartName}"
+          '
 
-      echo "$(chartScriptEnd)" >> "${reportFolder}/${htmlReportName}"
+        tableRowEnd
+      done
 
-      ##################################################################
+    tableBodyEnd
 
-      echo "  </body>" >> "${reportFolder}/${htmlReportName}"
-      echo "</html>" >> "${reportFolder}/${htmlReportName}"
+  tableEnd
 
-popd > /dev/null
+  # ------------------------------------------------------------------------------------------------
+  # create the chart contents
+  # ------------------------------------------------------------------------------------------------
 
-date > /dev/tty
+  chartScriptStart
+
+    local row
+    for row in "${rows[@]}"; do
+
+      local reportColName
+      json reportColName = row.name
+
+      local scriptName
+      json scriptName = row.scriptName
+
+      local chartNamePattern="${scriptName}"
+      local headerFieldName
+      for headerFieldName in "${headerFieldNames[@]}"; do
+        chartNamePattern="${chartNamePattern}_${headerFieldName}_\${${headerFieldName}}"
+      done
+
+      loopFields "${fieldsConfig}" "${headerFieldNames[@]}" '
+        eval "local chartName=\"${chartNamePattern}\""
+        chartStart "${chartName}"
+          local axisLabels=$(joinValues , ${axisValues[@]})
+          chartLabels ${axisLabels}
+          chartDatasetsStart
+            local colorIndex=0
+            local first="true"
+
+            loopFields "${fieldsConfig}" "${datasetFieldNames[@]}" '"'"'
+              local dsResult
+              local axisValue
+              for axisValue in "${axisValues[@]}"; do
+                eval "${axisFieldName}=\"${axisValue}\""
+                loopFields "${fieldsConfig}" "${singleMatchFieldNames[@]}" '"'\"'\"'"'
+                  eval "local folderName=\"${scenarioFolderPattern}\""
+                  eval "local fileName=\"${scenarioFileNamePattern}\""
+
+                  if [[ -f "${reportFolder}/${folderName}/${fileName}" ]]; then
+                    local sum=0
+                    local cnt=0
+
+                    local fieldNameIndex=0
+                    local firstLine="true"
+                    local line
+                    while IFS='' read -r line || [[ -n "$line" ]]; do
+                      local fields=()
+                      IFS=',' read -ra fields <<< "${line}"
+                      if [[ "${firstLine}" == "true" ]]; then
+                        firstLine="false"
+                        local fieldIndex
+                        for fieldIndex in "${!fields[@]}"; do
+                            if [[ "${fields[fieldIndex]}" == "${reportColName}" ]]; then
+                              fieldNameIndex=${fieldIndex}
+                            fi
+                        done
+                      else
+                        sum=$(floatSum ${sum} ${fields[fieldNameIndex]})
+                        ((cnt++))
+                      fi
+                    done < "${reportFolder}/${folderName}/${fileName}"
+
+                    dsResult="${dsResult},$(floatDiv ${sum} ${cnt})"
+
+                    break "${#singleMatchFieldNames[@]}"
+                  fi
+
+                '"'\"'\"'"'
+              done
+
+              local datasetLabelPattern
+              json datasetLabelPattern = dataset.label
+
+              eval "datasetLabel=\"${datasetLabelPattern}\""
+
+              chartDataset "${datasetLabel}" "${dsResult:1}" "${colors[colorIndex]}" "${first}"
+
+              ((colorIndex++))
+              first="false"
+            '"'"'
+          chartDatasetsEnd
+        chartEnd
+      '
+
+    done
+
+  chartScriptEnd
+
+  # ------------------------------------------------------------------------------------------------
+
+  echo "  </body>"
+  echo "</html>"
+}
+
+# ==================================================================================================
+# ==================================================================================================
+# ==================================================================================================
+# ==================================================================================================
+# ==================================================================================================
+
+function main {
+  local reportFolder="${1}"
+  local configFileName="${2:-config.json}"
+  local htmlReportName="${3:-report.html}"
+
+  local colors=(
+    '244, 67, 54'
+    '63, 81, 181'
+    '0, 150, 136'
+    '255, 206, 86'
+    '156, 39, 176'
+    '3, 169, 244'
+    '139, 195, 74'
+    '255, 152, 0'
+    '233, 30, 99'
+    '33, 150, 243'
+    '76, 175, 80'
+    '255, 193, 7'
+    '103, 58, 183'
+    '0, 188, 212'
+    '205, 220, 57'
+    '255, 99, 132'
+    '54, 162, 235'
+    '153, 102, 255'
+    '255, 87, 34'
+    '96, 125, 139'
+    '255, 159, 64'
+    '121, 85, 72'
+  )
+
+  echo "START: $(date)" > /dev/tty
+
+  pushd "${projDir}" > /dev/null
+
+  pwd > /dev/tty
+
+  local config="$(cat ${reportFolder}/${configFileName})"
+
+  generateReport > "${reportFolder}/${htmlReportName}"
+
+  popd > /dev/null
+
+  echo "END: $(date)" > /dev/tty
+}
+
+# ==================================================================================================
+
+main "${@}"

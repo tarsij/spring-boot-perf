@@ -3,6 +3,8 @@
 scriptDir="$(cd "$(dirname "$0")" ; pwd -P )"
 projDir="$scriptDir/.."
 
+pushd "${projDir}" > /dev/null
+
 # Defaults
 
 reportFolder="reports/test-sync"
@@ -399,6 +401,8 @@ function getDatasetFor {
 
 # ##################################################################################################
 
+date > /dev/tty
+
 mkdir -p "${reportFolder}"
 echo "" > "${reportFolder}/${htmlReportName}"
 
@@ -523,3 +527,7 @@ echo "<html lang=\"en\">
 
       echo "  </body>" >> "${reportFolder}/${htmlReportName}"
       echo "</html>" >> "${reportFolder}/${htmlReportName}"
+
+popd > /dev/null
+
+date > /dev/tty

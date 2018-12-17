@@ -1,0 +1,85 @@
+{
+  "testName": "AsyncRestThrottled",
+  "scenarioFolderPattern": "${scenarioName}-srt-${srt}-tmt-${tmt}-uc-${uc}-rps-${rps}",
+  "scenarioFileNamePattern": "report.csv",
+  "fields": [
+    {
+      "name": "scenarioName",
+      "description": "The simulation class name",
+      "values": ["AsyncRestThrottled"]
+    },
+    {
+      "name": "srt",
+      "description": "The service's response time",
+      "values": [10, 50, 200]
+    },
+    {
+      "name": "tmt",
+      "description": "The tomcat's max thread count",
+      "values": [10, 20, 50]
+    },
+    {
+      "name": "rps",
+      "description": "The requests per second",
+      "values": [5000, 6000, 7000, 8000, 9000, 10000]
+    },
+    {
+      "name": "uc",
+      "description": "The user count used for the simulation",
+      "values": [2500, 2000],
+      "type": "singleMatch"
+    }
+  ],
+  "repeatCount": 3,
+  "report": {
+    "header": {
+      "fieldNames": [ "scenarioName", "srt" ],
+      "label": "${testName} @ ${srt}ms"
+    },
+    "dataset": {
+      "fieldNames": [ "tmt" ],
+      "label": "${tmt}"
+    },
+    "axis": {
+      "fieldName": "rps",
+      "label": "${rps} rps"
+    },
+    "rows": [
+      {
+        "name": "Req/s",
+        "scriptName": "mean_rps",
+        "text": "Mean RPS @ no. of threads"
+      },
+      {
+        "name": "Mean",
+        "scriptName": "mean_response_time",
+        "text": "Mean response time @ no. of threads"
+      },
+      {
+        "name": "Failed",
+        "scriptName": "error",
+        "text": "Errors @ no. of threads"
+      },
+      {
+        "name": "95th",
+        "scriptName": "95th_percentile",
+        "text": "95th percentile @ no. of threads"
+      },
+      {
+        "name": "99th",
+        "scriptName": "99th_percentile",
+        "text": "99th percentile @ no. of threads"
+      },
+      {
+        "name": "Max",
+        "scriptName": "max_percentile",
+        "text": "Max percentile @ no. of threads"
+      },
+      {
+        "name": "Peak",
+        "scriptName": "peak_threads",
+        "text": "Peak threads @ no. of threads"
+      }
+    ]
+  }
+}

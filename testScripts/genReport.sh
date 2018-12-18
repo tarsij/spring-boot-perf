@@ -360,7 +360,7 @@ function generateReport {
       }
       .divTable{
         display: table;
-        width: 930px;
+        margin: 0 auto;
       }
       .divTableRow {
         display: table-row;
@@ -376,11 +376,13 @@ function generateReport {
         border: 1px solid #999999;
         display: table-cell;
         padding: 3px 10px;
-        width: 300px;
       }
       .divTableHead, .divTableFirst {
         text-align: center;
         vertical-align: middle;
+      }
+      .divTableFirst {
+        width: 100px;
       }
       /*.divTableFoot {*/
         /*background-color: #EEE;*/
@@ -590,8 +592,6 @@ function main {
   echo "START: $(date)" > /dev/tty
 
   pushd "${projDir}" > /dev/null
-
-  pwd > /dev/tty
 
   local config="$(cat ${reportFolder}/${configFileName})"
 

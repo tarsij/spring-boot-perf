@@ -1,0 +1,3509 @@
+<html lang="en">
+  <head>
+    <title>Report for SyncRestThrottled</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    <style>
+      html, body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        display: flex;
+      }
+      .divTable{
+        display: table;
+        margin: 0 auto;
+      }
+      .divTableRow {
+        display: table-row;
+      }
+      .divTableHeading {
+        display: table-header-group;
+      }
+      .divTableHeading, .divTableFirst {
+        background-color: #EEE;
+        font-weight: bold;
+      }
+      .divTableCell, .divTableHead, .divTableFirst {
+        border: 1px solid #999999;
+        display: table-cell;
+        padding: 3px 10px;
+      }
+      .divTableHead, .divTableFirst {
+        text-align: center;
+        vertical-align: middle;
+      }
+      .divTableFirst {
+        width: 100px;
+      }
+      /*.divTableFoot {*/
+        /*background-color: #EEE;*/
+        /*display: table-footer-group;*/
+        /*font-weight: bold;*/
+      /*}*/
+      .divTableBody {
+        display: table-row-group;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="divTable">
+      <div class="divTableHeading">
+        <div class="divTableRow">
+          <div class="divTableHead">
+            &nbsp;
+          </div>
+          <div class="divTableHead">
+            SyncRestThrottled @ 10ms
+          </div>
+          <div class="divTableHead">
+            SyncRestThrottled @ 50ms
+          </div>
+          <div class="divTableHead">
+            SyncRestThrottled @ 100ms
+          </div>
+          <div class="divTableHead">
+            SyncRestThrottled @ 150ms
+          </div>
+          <div class="divTableHead">
+            SyncRestThrottled @ 200ms
+          </div>
+        </div>
+      </div>
+      <div class="divTableBody">
+        <div class="divTableRow">
+          <div class="divTableFirst">
+            Mean RPS @ no. of threads
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_mean_rps_scenarioName_SyncRestThrottled_srt_10" width="400" height="250"></canvas>
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_mean_rps_scenarioName_SyncRestThrottled_srt_50" width="400" height="250"></canvas>
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_mean_rps_scenarioName_SyncRestThrottled_srt_100" width="400" height="250"></canvas>
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_mean_rps_scenarioName_SyncRestThrottled_srt_150" width="400" height="250"></canvas>
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_mean_rps_scenarioName_SyncRestThrottled_srt_200" width="400" height="250"></canvas>
+          </div>
+        </div>
+        <div class="divTableRow">
+          <div class="divTableFirst">
+            Mean response time @ no. of threads
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_mean_response_time_scenarioName_SyncRestThrottled_srt_10" width="400" height="250"></canvas>
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_mean_response_time_scenarioName_SyncRestThrottled_srt_50" width="400" height="250"></canvas>
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_mean_response_time_scenarioName_SyncRestThrottled_srt_100" width="400" height="250"></canvas>
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_mean_response_time_scenarioName_SyncRestThrottled_srt_150" width="400" height="250"></canvas>
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_mean_response_time_scenarioName_SyncRestThrottled_srt_200" width="400" height="250"></canvas>
+          </div>
+        </div>
+        <div class="divTableRow">
+          <div class="divTableFirst">
+            Errors @ no. of threads
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_error_scenarioName_SyncRestThrottled_srt_10" width="400" height="250"></canvas>
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_error_scenarioName_SyncRestThrottled_srt_50" width="400" height="250"></canvas>
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_error_scenarioName_SyncRestThrottled_srt_100" width="400" height="250"></canvas>
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_error_scenarioName_SyncRestThrottled_srt_150" width="400" height="250"></canvas>
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_error_scenarioName_SyncRestThrottled_srt_200" width="400" height="250"></canvas>
+          </div>
+        </div>
+        <div class="divTableRow">
+          <div class="divTableFirst">
+            95th percentile @ no. of threads
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_95th_percentile_scenarioName_SyncRestThrottled_srt_10" width="400" height="250"></canvas>
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_95th_percentile_scenarioName_SyncRestThrottled_srt_50" width="400" height="250"></canvas>
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_95th_percentile_scenarioName_SyncRestThrottled_srt_100" width="400" height="250"></canvas>
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_95th_percentile_scenarioName_SyncRestThrottled_srt_150" width="400" height="250"></canvas>
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_95th_percentile_scenarioName_SyncRestThrottled_srt_200" width="400" height="250"></canvas>
+          </div>
+        </div>
+        <div class="divTableRow">
+          <div class="divTableFirst">
+            99th percentile @ no. of threads
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_99th_percentile_scenarioName_SyncRestThrottled_srt_10" width="400" height="250"></canvas>
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_99th_percentile_scenarioName_SyncRestThrottled_srt_50" width="400" height="250"></canvas>
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_99th_percentile_scenarioName_SyncRestThrottled_srt_100" width="400" height="250"></canvas>
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_99th_percentile_scenarioName_SyncRestThrottled_srt_150" width="400" height="250"></canvas>
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_99th_percentile_scenarioName_SyncRestThrottled_srt_200" width="400" height="250"></canvas>
+          </div>
+        </div>
+        <div class="divTableRow">
+          <div class="divTableFirst">
+            Max percentile @ no. of threads
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_max_percentile_scenarioName_SyncRestThrottled_srt_10" width="400" height="250"></canvas>
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_max_percentile_scenarioName_SyncRestThrottled_srt_50" width="400" height="250"></canvas>
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_max_percentile_scenarioName_SyncRestThrottled_srt_100" width="400" height="250"></canvas>
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_max_percentile_scenarioName_SyncRestThrottled_srt_150" width="400" height="250"></canvas>
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_max_percentile_scenarioName_SyncRestThrottled_srt_200" width="400" height="250"></canvas>
+          </div>
+        </div>
+        <div class="divTableRow">
+          <div class="divTableFirst">
+            Peak threads @ no. of threads
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_peak_threads_scenarioName_SyncRestThrottled_srt_10" width="400" height="250"></canvas>
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_peak_threads_scenarioName_SyncRestThrottled_srt_50" width="400" height="250"></canvas>
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_peak_threads_scenarioName_SyncRestThrottled_srt_100" width="400" height="250"></canvas>
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_peak_threads_scenarioName_SyncRestThrottled_srt_150" width="400" height="250"></canvas>
+          </div>
+          <div class="divTableCell">
+            <canvas class="chart" id="myChart_peak_threads_scenarioName_SyncRestThrottled_srt_200" width="400" height="250"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      var ctx_mean_rps_scenarioName_SyncRestThrottled_srt_10 = document.getElementById("myChart_mean_rps_scenarioName_SyncRestThrottled_srt_10").getContext('2d');
+      new Chart(ctx_mean_rps_scenarioName_SyncRestThrottled_srt_10, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [4846.053,5809.16,6777.481,7737.42,8704.771,9671.464],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [4840.973,5815.156,6770.188,7745.643,8713.284,9672.026],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [4845.728,5803.084,6777.514,7737.458,8704.717,9691.997],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [4840.886,5809.121,6770.467,7745.574,8713.637,9682.194],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [4840.916,5803.068,6777.312,7753.68,8722.709,9681.833],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [4836.01,5809.079,6777.346,7745.425,8713.838,9671.809],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_mean_rps_scenarioName_SyncRestThrottled_srt_50 = document.getElementById("myChart_mean_rps_scenarioName_SyncRestThrottled_srt_50").getContext('2d');
+      new Chart(ctx_mean_rps_scenarioName_SyncRestThrottled_srt_50, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [2159.184,2136.086,2167.487,2149.544,2172.026,2150.939],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [4835.282,5808.384,6783.302,7744.066,8702.227,9678.317],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [4840.397,5814.463,6776.395,7736.45,8720.217,9683.25],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [4835.2,5802.23,6775.789,7743.295,8710.838,9657.709],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [4835.248,5814.473,6783.482,7743.512,8711.37,9687.741],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [4840.299,5814.583,6776.478,7751.143,8702.925,9660.321],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_mean_rps_scenarioName_SyncRestThrottled_srt_100 = document.getElementById("myChart_mean_rps_scenarioName_SyncRestThrottled_srt_100").getContext('2d');
+      new Chart(ctx_mean_rps_scenarioName_SyncRestThrottled_srt_100, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [1140.396,1134.273,1132.717,1133.15,1136.137,1136.548],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [4834.48,5393.122,5427.119,5438.446,5450.9,5463.939],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [4844.533,5807.386,6768.327,7742.236,8701.962,9580.922],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [4839.584,5813.49,6782.392,7738.999,8657.381,7838.788],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [4839.459,5807.228,6768.34,7746.502,8667.895,7836.595],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_mean_rps_scenarioName_SyncRestThrottled_srt_150 = document.getElementById("myChart_mean_rps_scenarioName_SyncRestThrottled_srt_150").getContext('2d');
+      new Chart(ctx_mean_rps_scenarioName_SyncRestThrottled_srt_150, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [772.444,768.461,769.945,768.623,770.299,770.318],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [3714.009,3725.842,3739.445,3740.911,3750.485,3752.784],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [4838.626,5805.176,6770.79,7684.737,8463.71,8825.493],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [4843.785,5806.218,6752.121,7429.23,7164.087,6932.238],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [4833.757,5806.362,6772.529,7505.384,7007.816,6793.259],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_mean_rps_scenarioName_SyncRestThrottled_srt_200 = document.getElementById("myChart_mean_rps_scenarioName_SyncRestThrottled_srt_200").getContext('2d');
+      new Chart(ctx_mean_rps_scenarioName_SyncRestThrottled_srt_200, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [582.703,582.32,584.249,580.422,581.967,579.537],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [2839.005,2846.99,2858.875,2859.166,2863.449,2865.488],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [4837.845,5792.369,6720.512,7212.045,7141.511,7208.407],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [4842.571,5804.303,6677.524,6566.568,6641.723,6348.441],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [4832.966,5799.405,6688.091,6309.94,6445.509,6350.723],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [4847.711,5794.729,6548.341,6730.644,6177.904,6584.406],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_mean_response_time_scenarioName_SyncRestThrottled_srt_10 = document.getElementById("myChart_mean_response_time_scenarioName_SyncRestThrottled_srt_10").getContext('2d');
+      new Chart(ctx_mean_response_time_scenarioName_SyncRestThrottled_srt_10, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [14.333,14.666,17,17,24,45.666],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [15,14.333,16.666,16,19,18.666],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [14,14.666,16,16,18,18.666],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [15,14.333,16.333,16,19,19.333],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [14,15.333,16,17.666,18.333,20],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [14,15.666,15,17.333,18,20],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_mean_response_time_scenarioName_SyncRestThrottled_srt_50 = document.getElementById("myChart_mean_response_time_scenarioName_SyncRestThrottled_srt_50").getContext('2d');
+      new Chart(ctx_mean_response_time_scenarioName_SyncRestThrottled_srt_50, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [1108.666,1122.333,1107.666,1121.333,1107.333,1118.666],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [58,58,62,62.666,77,78.666],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [58,58,61.333,62.333,70.666,73.666],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [58.666,58,62.333,62.666,72,87.333],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [58,56.666,61.333,64.333,71.333,77],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [56.666,60,60,65,68.333,76.666],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_mean_response_time_scenarioName_SyncRestThrottled_srt_100 = document.getElementById("myChart_mean_response_time_scenarioName_SyncRestThrottled_srt_100").getContext('2d');
+      new Chart(ctx_mean_response_time_scenarioName_SyncRestThrottled_srt_100, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [2112,2122.666,2122,2121.666,2121,2120.333],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [110,434,437,437.666,439,439],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [110,112,115,121.333,132,151],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [110,112,116,124.666,138.666,279.666],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [110,112.333,115.666,124.666,141.666,281.333],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_mean_response_time_scenarioName_SyncRestThrottled_srt_150 = document.getElementById("myChart_mean_response_time_scenarioName_SyncRestThrottled_srt_150").getContext('2d');
+      new Chart(ctx_mean_response_time_scenarioName_SyncRestThrottled_srt_150, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [3116,3126.666,3124.666,3123.666,3123.666,3124],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [638.666,641,641,641.666,641,641],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [161,164,170.666,189.666,242,267.333],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [161.333,164.666,176.333,229,313.333,341.333],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [161,165.333,175.333,214.333,324,349],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_mean_response_time_scenarioName_SyncRestThrottled_srt_200 = document.getElementById("myChart_mean_response_time_scenarioName_SyncRestThrottled_srt_200").getContext('2d');
+      new Chart(ctx_mean_response_time_scenarioName_SyncRestThrottled_srt_200, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [4125.333,4125.333,4116,4143.333,4123.666,4145],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [842.666,843.333,842.333,842.666,842,842],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [212.666,220,247.333,328,333.666,332.333],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [213,223.666,242.666,343,354.333,375],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [213.333,223,243.666,364.666,368,375.666],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [212.666,220.333,265.666,329.666,384.333,361.333],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_error_scenarioName_SyncRestThrottled_srt_10 = document.getElementById("myChart_error_scenarioName_SyncRestThrottled_srt_10").getContext('2d');
+      new Chart(ctx_error_scenarioName_SyncRestThrottled_srt_10, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [0,0,0,0,0,0],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [0,0,0,0,0,0],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [0,0,0,0,0,0],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [0,0,0,0,0,0],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [0,0,0,0,0,0],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [0,0,0,0,0,0],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_error_scenarioName_SyncRestThrottled_srt_50 = document.getElementById("myChart_error_scenarioName_SyncRestThrottled_srt_50").getContext('2d');
+      new Chart(ctx_error_scenarioName_SyncRestThrottled_srt_50, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [0,0,0,0,0,0],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [0,0,0,0,0,0],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [0,0,0,0,0,0.333],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [0,0,0,0,0,0],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [0,0,0,0,0,0],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [0,0,0,0,0,0],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_error_scenarioName_SyncRestThrottled_srt_100 = document.getElementById("myChart_error_scenarioName_SyncRestThrottled_srt_100").getContext('2d');
+      new Chart(ctx_error_scenarioName_SyncRestThrottled_srt_100, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [0,0,0,0,0,0],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [0,0,0,0,0,0],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [0,0,0,0,0,0],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [0,0,0,0,0,0],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [0,0,0,0,0,0],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_error_scenarioName_SyncRestThrottled_srt_150 = document.getElementById("myChart_error_scenarioName_SyncRestThrottled_srt_150").getContext('2d');
+      new Chart(ctx_error_scenarioName_SyncRestThrottled_srt_150, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [0,0,0,0,0,0],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [0,0,0,0,0,0],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [0,0,0,0,0,0],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [0,0,0,0,0,0],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [0,0,0,0,0,0],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_error_scenarioName_SyncRestThrottled_srt_200 = document.getElementById("myChart_error_scenarioName_SyncRestThrottled_srt_200").getContext('2d');
+      new Chart(ctx_error_scenarioName_SyncRestThrottled_srt_200, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [0,0,0,0,0,0],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [0,0,0,0,0,0],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [0,0,0,0,0,0],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [0,0,0,0,0,0],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [0,0,0,0,0,0],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [0,0,0,0,0,0],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_95th_percentile_scenarioName_SyncRestThrottled_srt_10 = document.getElementById("myChart_95th_percentile_scenarioName_SyncRestThrottled_srt_10").getContext('2d');
+      new Chart(ctx_95th_percentile_scenarioName_SyncRestThrottled_srt_10, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [18,18.666,26,29.333,50.333,110.666],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [19,18,23.333,24,32,34.666],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [17.333,18,21.666,24.666,31.666,34],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [19,18.333,23,24,32.333,37.333],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [18,20,22.333,26.666,33,36.666],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [17,20,20.333,26.333,32.333,36.333],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_95th_percentile_scenarioName_SyncRestThrottled_srt_50 = document.getElementById("myChart_95th_percentile_scenarioName_SyncRestThrottled_srt_50").getContext('2d');
+      new Chart(ctx_95th_percentile_scenarioName_SyncRestThrottled_srt_50, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [1182.666,1189.333,1183,1189.333,1182,1187.666],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [66,67.666,80.666,88.333,134,142.666],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [64.666,67,80.666,85.666,112,134.333],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [66.333,67,81,85.333,115,178.333],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [64.666,66.666,81.333,89.333,116,139.666],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [63,72.333,77,89.666,106.666,136.666],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_95th_percentile_scenarioName_SyncRestThrottled_srt_100 = document.getElementById("myChart_95th_percentile_scenarioName_SyncRestThrottled_srt_100").getContext('2d');
+      new Chart(ctx_95th_percentile_scenarioName_SyncRestThrottled_srt_100, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [2234.666,2244.333,2245.333,2246.666,2245.333,2245],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [120,481,482.333,483.666,484,483.333],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [119,129.333,140.333,162.333,210.666,264.333],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [119.666,130.333,145.666,177,227.666,1341.666],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [119.333,130.666,145,175.333,242.666,1300.666],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_95th_percentile_scenarioName_SyncRestThrottled_srt_150 = document.getElementById("myChart_95th_percentile_scenarioName_SyncRestThrottled_srt_150").getContext('2d');
+      new Chart(ctx_95th_percentile_scenarioName_SyncRestThrottled_srt_150, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [3306.333,3320.333,3318.333,3319.666,3323.666,3319.333],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [701,700.666,700,700.666,700.333,702.333],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [176.666,190.666,219.666,286,355.333,368.666],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [178.333,194.333,229.333,503.666,1287,1415.666],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [177.666,197.333,231.666,368.666,1307.666,1446],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_95th_percentile_scenarioName_SyncRestThrottled_srt_200 = document.getElementById("myChart_95th_percentile_scenarioName_SyncRestThrottled_srt_200").getContext('2d');
+      new Chart(ctx_95th_percentile_scenarioName_SyncRestThrottled_srt_200, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [4377.666,4357,4369,4368.333,4378.333,4361.333],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [918.333,928,914.666,921.666,917.333,921.333],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [237,271.666,343.333,380,396.666,393],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [239,275.666,369,782.666,948.333,1270.666],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [242,273,362.666,1102,1187,1322],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [241.666,266.333,445.666,786.666,1407,1167],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_99th_percentile_scenarioName_SyncRestThrottled_srt_10 = document.getElementById("myChart_99th_percentile_scenarioName_SyncRestThrottled_srt_10").getContext('2d');
+      new Chart(ctx_99th_percentile_scenarioName_SyncRestThrottled_srt_10, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [29.333,32.333,42.333,53,99.333,142.333],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [29.333,30,41,46.666,67,68.666],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [27,31.333,41.333,47.666,66,65.333],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [29.333,31,39.333,45,63.666,82.333],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [28,33,42.666,47,72.333,69],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [27,34,38.666,45.666,71.666,67.666],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_99th_percentile_scenarioName_SyncRestThrottled_srt_50 = document.getElementById("myChart_99th_percentile_scenarioName_SyncRestThrottled_srt_50").getContext('2d');
+      new Chart(ctx_99th_percentile_scenarioName_SyncRestThrottled_srt_50, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [1198.333,1200.666,1199.666,1201.666,1196.333,1201],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [83.333,92.666,109,135.666,205.333,200.333],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [82.333,89.333,114.333,134.666,204.666,234.666],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [85,88,111.333,126.333,207,280.333],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [82,91,114.666,151,215,235.666],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [77.666,95.666,106.333,131,207,231],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_99th_percentile_scenarioName_SyncRestThrottled_srt_100 = document.getElementById("myChart_99th_percentile_scenarioName_SyncRestThrottled_srt_100").getContext('2d');
+      new Chart(ctx_99th_percentile_scenarioName_SyncRestThrottled_srt_100, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [2254.333,2262,2262.333,2266.333,2263,2264],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [158.333,500.333,502,503,503.666,502.333],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [141.666,157.333,202.666,280.333,330.666,382],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [143,156.666,228.333,300.333,358.333,2735.333],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [141.333,159.666,211,305.333,367.333,2794.333],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_99th_percentile_scenarioName_SyncRestThrottled_srt_150 = document.getElementById("myChart_99th_percentile_scenarioName_SyncRestThrottled_srt_150").getContext('2d');
+      new Chart(ctx_99th_percentile_scenarioName_SyncRestThrottled_srt_150, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [3336,3351.666,3344.666,3347,3358.333,3344.333],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [726,724,722,724,722,727],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [208.666,255.333,357.333,424.333,485,479],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [209.333,253.666,404,1192.333,1460.333,1602],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [207.333,270,391.666,1236,1502,1635],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_99th_percentile_scenarioName_SyncRestThrottled_srt_200 = document.getElementById("myChart_99th_percentile_scenarioName_SyncRestThrottled_srt_200").getContext('2d');
+      new Chart(ctx_99th_percentile_scenarioName_SyncRestThrottled_srt_200, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [4412.666,4388.666,4404.666,4405.333,4429.333,4392.333],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [948.333,961.333,941.666,950.333,945.666,954.666],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [275,425,485.666,460,488.333,485],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [281.666,446.333,561.666,1442.333,1498.666,1625.666],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [287.666,443.333,546.333,1559.333,1608,1669.666],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [284.333,418.333,1034,1447.666,1631,1573.333],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_max_percentile_scenarioName_SyncRestThrottled_srt_10 = document.getElementById("myChart_max_percentile_scenarioName_SyncRestThrottled_srt_10").getContext('2d');
+      new Chart(ctx_max_percentile_scenarioName_SyncRestThrottled_srt_10, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [136.333,201.666,209.333,199.333,317.666,294],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [229.333,344,370.666,386.666,388.333,442],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [122.666,220,341,326.666,369.333,389.666],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [300.333,217.666,263.333,339,341.666,549],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [220,260,320,310.666,398.333,356.333],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [294.666,247.666,302.333,300,364.666,433.666],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_max_percentile_scenarioName_SyncRestThrottled_srt_50 = document.getElementById("myChart_max_percentile_scenarioName_SyncRestThrottled_srt_50").getContext('2d');
+      new Chart(ctx_max_percentile_scenarioName_SyncRestThrottled_srt_50, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [1247,1246,1242.666,1239.333,1250,1249],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [341,335,392.333,497.666,540,490],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [296.666,320.333,483.666,624.333,519.333,847.333],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [300.666,341,488.666,565.333,577.666,1049.666],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [302.666,336,490.333,509.666,716.666,728.666],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [306,340.333,409.666,478,871.666,811.666],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_max_percentile_scenarioName_SyncRestThrottled_srt_100 = document.getElementById("myChart_max_percentile_scenarioName_SyncRestThrottled_srt_100").getContext('2d');
+      new Chart(ctx_max_percentile_scenarioName_SyncRestThrottled_srt_100, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [2295,2310,2314.333,2319.666,2319.666,2316.333],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [391.333,707,716,698.666,1410.333,689.666],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [373.666,459,585.666,666,995.333,1938],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [360,506.333,599.666,693.666,3278.333,13536],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [382.333,572.333,537.666,663.333,2893.666,13612.666],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_max_percentile_scenarioName_SyncRestThrottled_srt_150 = document.getElementById("myChart_max_percentile_scenarioName_SyncRestThrottled_srt_150").getContext('2d');
+      new Chart(ctx_max_percentile_scenarioName_SyncRestThrottled_srt_150, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [3401.666,3415.333,3402.666,3397.666,3416.666,3402.666],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [913.333,956.666,910,920,922.333,923.333],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [564,727,715.666,794,903,1097.333],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [536,617.666,2026.666,7796.333,8040,7723.666],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [513.666,691.333,1532.666,7193,8337,8321],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_max_percentile_scenarioName_SyncRestThrottled_srt_200 = document.getElementById("myChart_max_percentile_scenarioName_SyncRestThrottled_srt_200").getContext('2d');
+      new Chart(ctx_max_percentile_scenarioName_SyncRestThrottled_srt_200, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [4474,4454,4481,4471,4508.333,4474],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [1136.666,1216.333,1182,1159.666,1169.666,1146.333],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [648.666,865.666,949.333,1015,1284.333,857.666],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [714.333,1627,2856.333,7143.666,8733.666,8002],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [601,2491.333,3219,8492.666,9351,8658.333],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [726.333,1491,4125.333,6635,8747.666,8726],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_peak_threads_scenarioName_SyncRestThrottled_srt_10 = document.getElementById("myChart_peak_threads_scenarioName_SyncRestThrottled_srt_10").getContext('2d');
+      new Chart(ctx_peak_threads_scenarioName_SyncRestThrottled_srt_10, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [132,132,132,132,132,132],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [553.666,509,601,612,612,612],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [511.666,519,704,723,849.333,711],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [507.333,579,647,780,856,919],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [557.333,543,731.333,768,882.333,839],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [557,569.333,654,707,945,803],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_peak_threads_scenarioName_SyncRestThrottled_srt_50 = document.getElementById("myChart_peak_threads_scenarioName_SyncRestThrottled_srt_50").getContext('2d');
+      new Chart(ctx_peak_threads_scenarioName_SyncRestThrottled_srt_50, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [132,132,132.666,132.666,134,134],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [612,612,612,612,612,612],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [928.666,1267.333,1502.333,1612,1612,1612],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [960.333,1149,1438,1781,2320,2412],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [996.333,1171.333,1537.666,1953.666,2277.666,2512],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [973,1230.333,1525,1742,2224.666,2512],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_peak_threads_scenarioName_SyncRestThrottled_srt_100 = document.getElementById("myChart_peak_threads_scenarioName_SyncRestThrottled_srt_100").getContext('2d');
+      new Chart(ctx_peak_threads_scenarioName_SyncRestThrottled_srt_100, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [134,134,134,134,134,134],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [612,612,612,612,612,612],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [1352,1612,1612,1612,1612,1612],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [1346.666,1745.333,2302,2412,2412,2412],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [1381.333,1811.666,2294.333,2512,2542.666,2573.333],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_peak_threads_scenarioName_SyncRestThrottled_srt_150 = document.getElementById("myChart_peak_threads_scenarioName_SyncRestThrottled_srt_150").getContext('2d');
+      new Chart(ctx_peak_threads_scenarioName_SyncRestThrottled_srt_150, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [134,134,134,134,134,134],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [612,612,612,612,612,612],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [1612,1612,1612,1612,1612,1612],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [1879,2326.666,2412,2412,2412,2412],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [1801.666,2414,2512.666,2515.333,2530.333,2526],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+      var ctx_peak_threads_scenarioName_SyncRestThrottled_srt_200 = document.getElementById("myChart_peak_threads_scenarioName_SyncRestThrottled_srt_200").getContext('2d');
+      new Chart(ctx_peak_threads_scenarioName_SyncRestThrottled_srt_200, {
+        type: 'line',
+        data: {
+          labels: [5000,6000,7000,8000,9000,10000],
+          datasets: [
+            {
+              label: '120',
+              data: [134,134,134,134,134,134],
+              backgroundColor: [
+                'rgba(244, 67, 54, 0.2)'
+              ],
+              borderColor: [
+                'rgba(244, 67, 54, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '600',
+              data: [612,612,612,612,612,612],
+              backgroundColor: [
+                'rgba(63, 81, 181, 0.2)'
+              ],
+              borderColor: [
+                'rgba(63, 81, 181, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '1600',
+              data: [1612,1612,1612,1612,1612,1612],
+              backgroundColor: [
+                'rgba(0, 150, 136, 0.2)'
+              ],
+              borderColor: [
+                'rgba(0, 150, 136, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '2400',
+              data: [2305.333,2412,2412,2412,2412,2412],
+              backgroundColor: [
+                'rgba(255, 206, 86, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '6000',
+              data: [2303.666,2512.666,2513,2518,2533,2529],
+              backgroundColor: [
+                'rgba(156, 39, 176, 0.2)'
+              ],
+              borderColor: [
+                'rgba(156, 39, 176, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            },
+            {
+              label: '9000',
+              data: [2353.666,2512,2521.333,2588.333,2549.666,2587],
+              backgroundColor: [
+                'rgba(3, 169, 244, 0.2)'
+              ],
+              borderColor: [
+                'rgba(3, 169, 244, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero:true
+              }
+            }]
+          },
+          legend: {
+            position: 'right'
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

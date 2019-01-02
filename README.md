@@ -49,7 +49,7 @@ Run the gatling tests:
       ```
 
 
-For the results please visit the ```https://tarsij.github.io/spring-boot-perf/``` page
+For the results please visit the following [page](https://tarsij.github.io/spring-boot-perf/)
 
 TODO:
   - pass in the number of threads to be used for the service

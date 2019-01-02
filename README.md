@@ -49,6 +49,8 @@ Run the gatling tests:
       ```
 
 
+For the results please visit the ```https://tarsij.github.io/spring-boot-perf/``` page
+
 TODO:
   - pass in the number of threads to be used for the service
   - make configurable the simulations (no. of users, test duration, ...)

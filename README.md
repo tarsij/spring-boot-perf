@@ -52,10 +52,10 @@ Run the gatling tests:
 For the results please visit the following [page](https://tarsij.github.io/spring-boot-perf/)
 
 TODO:
-  - pass in the number of threads to be used for the service
-  - make configurable the simulations (no. of users, test duration, ...)
-  - create a script to run the tests with different configurations and store the results
-  - create a script to generate charts (throughput / thread-count, response-time / thread-count)
+  - ~~pass in the number of threads to be used for the service~~
+  - ~~make configurable the simulations (no. of users, test duration, ...)~~
+  - ~~create a script to run the tests with different configurations and store the results~~
+  - ~~create a script to generate charts (throughput / thread-count, response-time / thread-count)~~
   - experiment with Callable return type with synchronous calls
   - experiment with Fibre light threads with synchronous calls
   - experiment with Spring Boot 2 reactive stack
